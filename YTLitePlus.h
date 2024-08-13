@@ -33,6 +33,13 @@
 #import "Tweaks/YouTubeHeader/YTVideoWithContextNode.h"
 #import "Tweaks/YouTubeHeader/ELMCellNode.h"
 #import "Tweaks/YouTubeHeader/ELMNodeController.h"
+#import "Tweaks/YouTubeHeader/YTMainAppVideoPlayerOverlayViewController.h"
+#import "Tweaks/YouTubeHeader/YTInlinePlayerBarContainerView.h"
+#import "Tweaks/YouTubeHeader/YTWatchViewController.h"
+#import "Tweaks/YouTubeHeader/YTWatchPullToFullController.h"
+#import "Tweaks/YouTubeHeader/YTPlayerBarController.h"
+#import "Tweaks/YouTubeHeader/YTResponder.h"
+#import "Tweaks/YouTubeHeader/YTMainAppControlsOverlayView.h"
 
 #define LOC(x) [tweakBundle localizedStringForKey:x value:nil table:nil]
 #define YT_BUNDLE_ID @"com.google.ios.youtube"
@@ -61,7 +68,6 @@
 - (void)setRate:(float)rate;
 @end
 
-// IAmYouTube
 @interface SSOConfiguration : NSObject
 @end
 
@@ -72,9 +78,6 @@
 @interface YTPlayabilityResolutionUserActionUIController : NSObject // Skips content warning before playing *some videos - @PoomSmart
 - (void)confirmAlertDidPressConfirm;
 @end 
-
-@interface YTMainAppControlsOverlayView: UIView
-@end
 
 @interface YTTransportControlsButtonView : UIView
 @end
@@ -94,6 +97,36 @@
 @property (nonatomic, assign, readwrite) BOOL enableSnapToChapter;
 @end
 
+// Hide Autoplay Mini Preview - @bhackel
+@interface YTAutonavPreviewView : UIView
+@end
+
+// OLED Live Chat - @bhackel
+@interface YTLUserDefaults : NSUserDefaults
+@end
+
+// Hide Home Tab - @bhackel
+@interface YTPivotBarViewController : UIViewController
+@property NSString *selectedPivotIdentifier;
+@property YTIPivotBarRenderer *renderer;
+- (void)selectItemWithPivotIdentifier:(NSString *)pivotIdentifier;
+- (void)resetViewControllersCache;
+@end
+
+// Disable ambient mode & Fullscreen to the Right - @bhackel
+@interface YTWatchViewController (YTLitePlus) <YTResponder>
+@property (nonatomic, assign, readwrite, getter=isFullscreen) BOOL fullscreen;
+@end
+
+@interface YTWatchCinematicContainerController : NSObject
+@property id <YTResponder> parentResponder;
+@end
+
+// Hide Collapse Button - @arichornlover
+@interface YTMainAppControlsOverlayView (YTLitePlus)
+@property (nonatomic, assign, readwrite) YTQTMButton *watchCollapseButton;
+@end
+
 // SponsorBlock button in Nav bar
 @interface MDCButton : UIButton
 @end
@@ -104,7 +137,7 @@
 @end
 
 // BigYTMiniPlayer
-@interface YTMainAppVideoPlayerOverlayView : UIView
+@interface YTMainAppVideoPlayerOverlayView (YTLitePlus)
 - (UIViewController *)_viewControllerForAncestor;
 @end
 
