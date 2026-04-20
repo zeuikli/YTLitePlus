@@ -1,3 +1,7 @@
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <string.h>
+
 #import "../YTLitePlus.h"
 #import "../Tweaks/YouTubeHeader/YTSettingsViewController.h"
 #import "../Tweaks/YouTubeHeader/YTSearchableSettingsViewController.h"
@@ -7,6 +11,7 @@
 #import "../Tweaks/YouTubeHeader/YTSettingsPickerViewController.h"
 #import "SettingsKeys.h"
 // #import "AppIconOptionsController.h"
+
 
 // Basic switch item
 #define BASIC_SWITCH(title, description, key) \
@@ -149,7 +154,7 @@ static const NSInteger YTLiteSection = 789;
                 
                 // Show an option to export YouTube Plus settings
                 UIAlertController *exportAlert = [UIAlertController alertControllerWithTitle:@"Export Settings"
-                                                    message:@"Note: This feature cannot save iSponsorBlock and most YouTube settings.\n\nWould you like to also export your YouTube Plus Settings?"
+                                                    message:@"Note: This feature cannot save most YouTube settings.\n\nWould you like to also export your YouTube Plus Settings?"
                                                     preferredStyle:UIAlertControllerStyleAlert];
                 [exportAlert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
                 [exportAlert addAction:[UIAlertAction actionWithTitle:@"Export" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -247,7 +252,7 @@ static const NSInteger YTLiteSection = 789;
     // Helper to generate checkmark setting items for selecting gesture modes
     static YTSettingsSectionItem* (^gestureCheckmarkSettingItem)(NSInteger, NSString *) = ^(NSInteger idx, NSString *key) {
         return [YTSettingsSectionItemClass 
-            checkmarkItemWithTitle:sectionGestureSelectedModeToString(idx)
+            checkmarkItemWithTitle:sectionGestureSelectedModeToString((GestureMode)idx)
             selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                 [[NSUserDefaults standardUserDefaults] setInteger:idx forKey:key];
                 [settingsViewController reloadData];
@@ -261,7 +266,7 @@ static const NSInteger YTLiteSection = 789;
         return [YTSettingsSectionItemClass itemWithTitle:LOC(sectionLabel)
             accessibilityIdentifier:nil
             detailTextBlock:^NSString *() {
-                return sectionGestureSelectedModeToString(GetInteger(sectionKey));
+                return sectionGestureSelectedModeToString((GestureMode)GetInteger(sectionKey));
             }
             selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
                 NSArray <YTSettingsSectionItem *> *rows = @[
@@ -650,7 +655,6 @@ static const NSInteger YTLiteSection = 789;
             BASIC_SWITCH(LOC(@"NEW_MINIPLAYER_STYLE"), LOC(@"NEW_MINIPLAYER_STYLE_DESC"), @"bigYTMiniPlayer_enabled"),
             BASIC_SWITCH(LOC(@"HIDE_CAST_BUTTON"), LOC(@"HIDE_CAST_BUTTON_DESC"), @"hideCastButton_enabled"),
             BASIC_SWITCH(LOC(@"VIDEO_PLAYER_BUTTON"), LOC(@"VIDEO_PLAYER_BUTTON_DESC"), @"videoPlayerButton_enabled"),
-            BASIC_SWITCH(LOC(@"HIDE_SPONSORBLOCK_BUTTON"), LOC(@"HIDE_SPONSORBLOCK_BUTTON_DESC"), @"hideSponsorBlockButton_enabled"),
             BASIC_SWITCH(LOC(@"HIDE_HOME_TAB"), LOC(@"HIDE_HOME_TAB_DESC"), @"hideHomeTab_enabled"),
             BASIC_SWITCH(LOC(@"FIX_CASTING"), LOC(@"FIX_CASTING_DESC"), @"fixCasting_enabled"),
             BASIC_SWITCH(LOC(@"REPLACE_COPY_AND_PASTE_BUTTONS"), LOC(@"REPLACE_COPY_AND_PASTE_BUTTONS_DESC"), @"switchCopyandPasteFunctionality_enabled"),
@@ -717,7 +721,7 @@ static const NSInteger YTLiteSection = 789;
             [[%c(GOOHUDManagerInternal) sharedInstance] showMessageMainThread:[%c(YTHUDMessage) messageWithText:@"Settings saved"]];
             // Export mode: Display a reminder to save YouTube Plus settings
             UIAlertController *exportAlert = [UIAlertController alertControllerWithTitle:@"Export Settings"
-                                                message:@"Note: This feature cannot save iSponsorBlock and most YouTube settings.\n\nWould you like to also export your YouTube Plus Settings?"
+                                                message:@"Note: This feature cannot save most YouTube settings.\n\nWould you like to also export your YouTube Plus Settings?"
                                                 preferredStyle:UIAlertControllerStyleAlert];
             [exportAlert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
             [exportAlert addAction:[UIAlertAction actionWithTitle:@"Export" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
